@@ -28,3 +28,5 @@ Route::get('/tags','TagController@listAll');
 //Endpoints para lançamentos
 
 Route::post('/create-lancamento','LancamentoController@create');
+
+Route::post('/bind-tags/{idLancamento}','LancamentoController@bindTags');

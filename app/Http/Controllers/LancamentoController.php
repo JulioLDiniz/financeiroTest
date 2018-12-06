@@ -21,4 +21,14 @@ class LancamentoController extends Controller
 			return response()->json(['message-error'=>$e->getMessage()]);
 		}
 	}
+
+	public function bindTags(Request $request, $idLancamento){
+		try{
+			$lancamento = new Lancamento();	
+			$lancamento->bindTags($request->idTags, $idLancamento);
+			return response()->json(['message-success'=>'Tags vinculadas com sucesso.']);
+		}catch(\Exception $e){
+			return response()->json(['message-error'=>$e->getMessage()]);
+		}
+	}
 }
