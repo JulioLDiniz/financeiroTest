@@ -12,6 +12,12 @@ class Lancamento extends Model
 		'tag','descricao','tipo'
 	];
 
+	//Esse método verifica o tipo do lancamento. Vai ser usado no método de cadastrar e alterar lancamento
+	public function verifyTypeLancamento($lancamentoTipo){
+		if(($lancamentoTipo != "D") && ($lancamentoTipo != "C")){
+			 throw new \Exception("O tipo deve ser debito(d) ou credito(c).");
+		}
+	}
 	public function tags(){
 		return $this->belongsToMany('App\Tag');
 	}
@@ -26,9 +32,8 @@ class Lancamento extends Model
 	}
 
 	public function saveLancamento(Lancamento $lancamento, $tags){
-		if(($lancamento->tipo != "D") && ($lancamento->tipo != "C")){
-			 throw new \Exception("O tipo deve ser debito(d) ou credito(c).");
-		}elseif(!$lancamento->save()){
+		$this->verifyTypeLancamento($lancamento->tipo);
+		if(!$lancamento->save()){
 			throw new \Exception("Erro ao cadastrar lancamento.");
 		}else{
 			//salva primeiro as tags e depois as vincula no lancamento
@@ -69,6 +74,7 @@ class Lancamento extends Model
 	}
 	public function updateLancamento($params, $id){
 		$lancamento = $this->verifyIfExists($id);
+		$this->verifyTypeLancamento($params['tipo']);
 		if(!$lancamento->update($params)){
 			throw new \Exception('Erro ao alterar lancamento.');
 		}else{
