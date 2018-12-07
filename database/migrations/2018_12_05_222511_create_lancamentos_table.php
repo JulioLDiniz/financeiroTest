@@ -19,7 +19,7 @@ class CreateLancamentosTable extends Migration
             $table->date('data_vencimento');
             $table->decimal('valor', 9,2);
             $table->enum('tipo',['D','C','P','R']);
-            $table->boolean('status');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

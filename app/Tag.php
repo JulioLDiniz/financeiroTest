@@ -57,7 +57,7 @@ class Tag extends Model
 	public function listAll(){
 		if(!$this->all()){
 			throw new \Exception('Erro ao listar tags.');
-		}else if($this->all()->isEmpty()){
+		}elseif($this->all()->isEmpty()){
 			throw new ModelNotFoundException('Nenhuma tag encontrada.');
 		}else{
 			$tags = $this->all();
