@@ -24,7 +24,7 @@ class LancamentoController extends Controller
 			return response()->json(['message-error'=>$e->getMessage()]);
 		}
 	}
-
+	//Vincula as tags já existentes a um lançamento já existente.
 	public function bindTags(Request $request, $idLancamento){
 		try{
 			$lancamento = new Lancamento();	
@@ -73,6 +73,7 @@ class LancamentoController extends Controller
 		}
 	}
 
+	//Faz o uso do método de baixa do lançamento
 	public function giveLowLancamento($id){
 		try{
 			$lancamento = new Lancamento();

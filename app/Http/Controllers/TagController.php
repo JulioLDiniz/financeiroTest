@@ -13,7 +13,9 @@ class TagController extends Controller
 			$tag = new Tag();
 			$tag->descricao = $request->input('descricao');
 			$tag->saveTag($tag);
-			$tag->lancamento()->attach($request->input('lancamento_id'));			
+
+			//o trecho abaixo está preparado para caso queira que seja vinulado lancamento também por tags.
+			//$tag->lancamento()->attach($request->input('lancamento_id'));			
 			return response()->json(['message-success'=>'Tag cadastrada com sucesso.']);
 		}catch(\Exception $e){
 			return response()->json(['message-error'=>$e->getMessage()]);

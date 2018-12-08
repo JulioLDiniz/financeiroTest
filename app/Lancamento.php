@@ -9,15 +9,16 @@ use App\Tag;
 class Lancamento extends Model
 {
 	protected $fillable = [
-		'tag','descricao','tipo'
+		'tag','descricao','tipo','status','dataVencimento','valor'
 	];
 
-	//Esse método verifica o tipo do lancamento. Vai ser usado no método de cadastrar e alterar lancamento
+	//Esse método verifica o tipo do lancamento. Vai ser usado no método de cadastrar e alterar lancamento com o intuito de reaproveitar o código.
 	public function verifyTypeLancamento($lancamentoTipo){
 		if(($lancamentoTipo != "D") && ($lancamentoTipo != "C")){
-			 throw new \Exception("O tipo deve ser debito(d) ou credito(c).");
+			 throw new \Exception("O tipo deve ser debito(D) ou credito(C).");
 		}
 	}
+	//Faz a relacao many to many para tags
 	public function tags(){
 		return $this->belongsToMany('App\Tag');
 	}
@@ -30,6 +31,7 @@ class Lancamento extends Model
 			return $this->find($id);
 		}
 	}
+
 
 	public function saveLancamento(Lancamento $lancamento, $tags){
 		$this->verifyTypeLancamento($lancamento->tipo);
@@ -48,7 +50,7 @@ class Lancamento extends Model
 			$lancamento->save();
 		}
 	}
-	//vincula tags ao lançamento
+	//vincula tags ao lançamento após o lancamento estar cadastrado
 	public function bindTags($tags, $idLancamento){
 		$lancamento = $this->find($idLancamento);
 		return $lancamento->tags()->attach($tags);
@@ -89,8 +91,12 @@ class Lancamento extends Model
 			$lancamento->delete();
 		}
 	}
+	//Dá a baixa no lançamento. Faz as verificações se o lancamento existe, se a baixa já foi realizada. Caso passe por isso, dá a baixa. 
 	public function giveLowLancamento($id){
 		$lancamento = $this->verifyIfExists($id);
+		if($lancamento->status==1){
+			throw new \Exception('Baixa já realizada.');
+		}
 		$lancamento->status = 1;
 		if($lancamento->tipo == "D"){
 			$lancamento->tipo = "P";
@@ -99,5 +105,6 @@ class Lancamento extends Model
 		}
 		$lancamento->update();
 	}
+
 
 }
