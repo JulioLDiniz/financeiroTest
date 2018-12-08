@@ -15,7 +15,7 @@ class Lancamento extends Model
 	//Esse método verifica o tipo do lancamento. Vai ser usado no método de cadastrar e alterar lancamento com o intuito de reaproveitar o código.
 	public function verifyTypeLancamento($lancamentoTipo){
 		if(($lancamentoTipo != "D") && ($lancamentoTipo != "C")){
-			 throw new \Exception("O tipo deve ser debito(D) ou credito(C).");
+			throw new \Exception("O tipo deve ser debito(D) ou credito(C).");
 		}
 	}
 	//Faz a relacao many to many para tags
@@ -40,12 +40,17 @@ class Lancamento extends Model
 		}else{
 			//salva primeiro as tags e depois as vincula no lancamento
 			if(!is_null($tags)){
-
-				foreach ($tags as $tag) {
+				if(is_array($tags)){
+					foreach ($tags as $tag) {
+						$newTag = new Tag();
+						$newTag->descricao = $tag;
+						$newTag->saveTag($newTag);
+					}
+				}else{
 					$newTag = new Tag();
-					$newTag->descricao = $tag;
+					$newTag->descricao = $tags;
 					$newTag->saveTag($newTag);
-				}
+				}				
 			}
 			$lancamento->save();
 		}
