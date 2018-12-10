@@ -11,5 +11,5 @@ Para rodar o projeto, é preciso seguir os passos abaixo:
 
 4 - Rode o comando jwt:secret para gerar uma chave na qual vai ser usada para geração de tokens do JWT.
 
-5 - Ao fazer a autenticação, use como header da requisição a key 'Authorization' e a key 'Bearer token_criado'. 
+5 - Ao fazer a autenticação, use como header da requisição a key 'Authorization' e o value 'Bearer token_criado'. 
 
