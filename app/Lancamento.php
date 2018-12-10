@@ -9,7 +9,7 @@ use App\Tag;
 class Lancamento extends Model
 {
 	protected $fillable = [
-		'tag','descricao','tipo','status','dataVencimento','valor'
+		'tag','descricao','tipo','status','data_vencimento','valor'
 	];
 
 	//Esse método verifica o tipo do lancamento. Vai ser usado no método de cadastrar e alterar lancamento com o intuito de reaproveitar o código.
@@ -35,6 +35,8 @@ class Lancamento extends Model
 
 	public function saveLancamento(Lancamento $lancamento, $tags){
 		$this->verifyTypeLancamento($lancamento->tipo);
+		$lancamento->save();
+
 		if(!$lancamento->save()){
 			throw new \Exception("Erro ao cadastrar lancamento.");
 		}else{
@@ -45,14 +47,15 @@ class Lancamento extends Model
 						$newTag = new Tag();
 						$newTag->descricao = $tag;
 						$newTag->saveTag($newTag);
+						$lancamento->tags()->attach($newTag);
 					}
 				}else{
 					$newTag = new Tag();
 					$newTag->descricao = $tags;
 					$newTag->saveTag($newTag);
+					$lancamento->tags()->attach($newTag);
 				}				
 			}
-			$lancamento->save();
 		}
 	}
 	//vincula tags ao lançamento após o lancamento estar cadastrado
