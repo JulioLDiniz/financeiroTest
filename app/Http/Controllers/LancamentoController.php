@@ -14,7 +14,7 @@ class LancamentoController extends Controller
 		try{
 			$lancamento = new Lancamento();
 			$lancamento->descricao = $request->input('descricao');
-			$lancamento->data_vencimento = $request->input('dataVencimento');
+			$lancamento->data_vencimento = $request->input('data_vencimento');
 			$lancamento->valor = $request->input('valor');
 			$lancamento->tipo = $request->input('tipo');
 			$lancamento->saveLancamento($lancamento, $request->input('tags'));
